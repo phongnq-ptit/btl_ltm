@@ -1,16 +1,36 @@
-import express from "express";
 import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import morgan from "morgan";
+import routes from "./routes/routes"
 
 dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+//middlware
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
 
-app.get('/', (req, res) => {
-    res.send("phong dep trai vl!");
-})
+// Database
+// const URL = process.env.MONGODB_URL;
 
-app.listen(PORT, () => {
-    console.log("OK");
-})
+// mongoose.connect(URL, {
+//     autoIndex: false
+// }, (err) => {
+//     if (err) throw err;
+//     console.log('MongoDB connection!');
+// })
+
+// Routes
+app.use('/api', routes);
+
+// Start server listen
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+    console.log('Server running on port', port);
+});

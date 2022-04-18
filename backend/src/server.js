@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
 import routes from "./routes/routes"
@@ -26,7 +25,7 @@ app.use(express.urlencoded());
 // })
 
 // Routes
-app.use('/api', routes);
+// app.use('/api', routes);
 
 // Start server listen
 const port = process.env.PORT || 5000;

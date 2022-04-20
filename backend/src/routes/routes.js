@@ -1,7 +1,7 @@
+import initUserRoute from "./userRoute";
 
-
-const routes = [
-
-]
+const routes = (app) => {
+    initUserRoute(app);
+}
 
 export default routes;

@@ -1,31 +1,29 @@
 "use strict";
 const nodemailer = require("nodemailer");
-const { getMaxListeners } = require("../models/User");
+// const { getMaxListeners } = require("../models/User");
 
+require('dotenv').config();
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendMail(email, link, name) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
-    let testAccount = {
-        user: 'nduc04@gmail.com',
-        pass: 'fejsjtypbaomckoe'
-    }
+
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: process.env.host,
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass, // generated ethereal password
+            user: process.env.USER, // generated ethereal user
+            pass: process.env.PASS, // generated ethereal password
         },
     });
 
     // send mail with defined transport object
     let info = {
-        from: testAccount.user, // sender address
+        from: process.env.USER, // sender address
         to: email, // list of receivers
         subject: "Hello ✔", // Subject line
         html: "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +

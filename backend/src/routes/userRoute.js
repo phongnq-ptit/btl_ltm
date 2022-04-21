@@ -13,6 +13,9 @@ const initUserRoute = (app) => {
     // lay tat ca user ra
     router.get('/users', userCtrl.getAllUser);
 
+    // active user
+    router.get('/active/:token', userCtrl.activeUser);
+
     // lay ra mot user
     router.get('/users/:id', userCtrl.getUser);
 

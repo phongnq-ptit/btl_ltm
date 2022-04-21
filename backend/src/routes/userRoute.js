@@ -10,6 +10,12 @@ const initUserRoute = (app) => {
     // dang ky
     router.post('/register', userCtrl.userRegister);
 
+    // lay tat ca user ra
+    router.get('/users', userCtrl.getAllUser);
+
+    // lay ra mot user
+    router.get('/users/:id', userCtrl.getUser);
+
     return app.use('/api', router);
 }
 

@@ -16,14 +16,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 // Database
-// const URL = process.env.MONGODB_URL;
+const URL = process.env.MONGODB_URL;
 
-// mongoose.connect(URL, {
-//     autoIndex: false
-// }, (err) => {
-//     if (err) throw err;
-//     console.log('MongoDB connection!');
-// })
+mongoose.connect(URL, {
+    autoIndex: false
+}, (err) => {
+    if (err) throw err;
+    console.log('MongoDB connection!');
+})
 
 // Routes
 routes(app);

@@ -2,6 +2,7 @@ import User from "../model/User";
 import token from "../services/token";
 import activeUser from "../services/activeUser";
 import bcrypt from "bcrypt";
+import { APIfeartures } from "../lib/features";
 
 const userCtrl = {
     userLogin: async (req, res) => {
@@ -57,7 +58,17 @@ const userCtrl = {
     },
     getAllUser: async (req, res) => {
         try {
-            const users = await User.find();
+            const features = new APIfeartures(User.find(), req.query)
+                .paginating()   // phân trang
+                .sorting()      // sắp xếp
+                .searching()    // tìm kiếm
+                .filtering();   // lọc
+
+            const result = await Promise.allSettled([
+                features.query
+            ]);
+
+            const users = result[0].status === 'fulfilled' ? result[0].value : [];
 
             return res.status(200).json(users);
         } catch (error) {

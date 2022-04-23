@@ -1,9 +1,20 @@
 import Dish from '../model/Dish';
+import { APIfeartures } from "../lib/features";
 
 const dishCtrl = {
     getAllDish: async (req, res) => {
         try {
-            const dishes = await Dish.find();
+            const features = new APIfeartures(Dish.find(), req.query)
+                .paginating()   // phân trang
+                .sorting()      // sắp xếp
+                .searching()    // tìm kiếm
+                .filtering();   // lọc
+
+            const result = await Promise.allSettled([
+                features.query
+            ]);
+
+            const dishes = result[0].status === 'fulfilled' ? result[0].value : [];
 
             return res.status(200).json(dishes);
         } catch (error) {

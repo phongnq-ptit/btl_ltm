@@ -46,6 +46,12 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// đặt chỉ số cho user
+userSchema.index({ fullName: 'text' });
+
 const User = mongoose.model('User', userSchema);
+
+// khởi tạo chỉ số
+User.createIndexes({ fullName: 'text' });
 
 export default User;

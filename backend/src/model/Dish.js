@@ -26,6 +26,12 @@ const dishSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// đặt chỉ số cho dish
+dishSchema.index({ name: 'text' });
+
 const Dish = mongoose.model('Dish', dishSchema);
+
+// khởi tạo chỉ số
+Dish.createIndexes({ name: 'text' });
 
 export default Dish;

@@ -5,6 +5,7 @@ import initFakeRoute from "./routeFake";
 import initSaleoffRoute from "./saleoffRoute";
 import initCategoryRoute from "./categoryRoute";
 import initBookingRoute from "./bookingRoute";
+import initTableRoute from "./tableRoute";
 
 const routes = (app) => {
     initFakeRoute(app);
@@ -14,6 +15,7 @@ const routes = (app) => {
     initSaleoffRoute(app);
     initCategoryRoute(app);
     initBookingRoute(app);
+    initTableRoute(app);
 }
 
 export default routes;

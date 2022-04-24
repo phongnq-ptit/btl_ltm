@@ -9,4 +9,8 @@ const tableSchema = new Schema({
         type: Boolean,
         default: false // false: còn trống, true : đã dùng
     }
-})
+});
+
+const Table = mongoose.model('Table', tableSchema);
+
+export default Table;

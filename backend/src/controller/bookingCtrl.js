@@ -1,12 +1,12 @@
 import Booking from '../model/Booking';
-import { APIfeartures } from "../lib/features";
 
 const bookingCtrl = {
     getAllBooking: async (req, res) => {
         try {
             const booking = await Booking.find()
                 .populate('booker')
-                .populate('dishes');
+                .populate('dishes')
+                .populate('emptyTable');
 
             return res.status(200).json(booking);
         } catch (error) {
@@ -17,10 +17,11 @@ const bookingCtrl = {
         try {
             const booking = await Booking.findById(req.params.id)
                 .populate('booker')
-                .populate('dishes');
+                .populate('dishes')
+                .populate('emptyTable');
 
             if (!booking) {
-                return res.status(404).json("Mon an khong ton tai!");
+                return res.status(404).json("Don dat ban khong ton tai!");
             }
 
             return res.status(200).json(booking);
@@ -48,7 +49,7 @@ const bookingCtrl = {
             }).populate('booker').populate('dishes');
 
             if (!booking) {
-                return res.status(404).json("Mon an khong ton tai!")
+                return res.status(404).json("Don dat ban khong ton tai!")
             }
 
             return res.status(200).json(booking);
@@ -61,10 +62,10 @@ const bookingCtrl = {
             const booking = await Booking.findByIdAndDelete(req.params.id);
 
             if (!booking) {
-                return res.status(404).json("Mon an khong ton tai!")
+                return res.status(404).json("Don dat ban khong ton tai!")
             }
 
-            return res.status(200).json("Xoa mon an thanh cong!");
+            return res.status(200).json("Xoa don dat ban thanh cong thanh cong!");
         } catch (error) {
             return res.status(500).json(error);
         }

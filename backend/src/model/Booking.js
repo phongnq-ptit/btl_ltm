@@ -26,6 +26,10 @@ const bookingSchema = new Schema({
     description: {
         type: String,
     },
+    emptyTable: {
+        type: Schema.Types.ObjectId,
+        ref: 'Table'
+    },
     status: {
         type: Boolean,
         default: false

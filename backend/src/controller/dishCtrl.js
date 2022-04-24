@@ -4,7 +4,7 @@ import { APIfeartures } from "../lib/features";
 const dishCtrl = {
     getAllDish: async (req, res) => {
         try {
-            const features = new APIfeartures(Dish.find(), req.query)
+            const features = new APIfeartures(Dish.find().populate('category'), req.query)
                 .paginating()   // phân trang
                 .sorting()      // sắp xếp
                 .searching()    // tìm kiếm
@@ -23,7 +23,7 @@ const dishCtrl = {
     },
     getDish: async (req, res) => {
         try {
-            const dish = await Dish.findById(req.params.id);
+            const dish = await Dish.findById(req.params.id).populate('category');
 
             if (!dish) {
                 return res.status(404).json("Mon an khong ton tai!");
@@ -51,7 +51,7 @@ const dishCtrl = {
                 _id: req.params.id
             }, req.body, {
                 new: true
-            });
+            }).populate('category');
 
             if (!dish) {
                 return res.status(404).json("Mon an khong ton tai!")

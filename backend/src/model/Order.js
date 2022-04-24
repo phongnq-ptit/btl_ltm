@@ -9,9 +9,18 @@ const orderSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Dish'
     }],
+    quantity: [{
+        type: Number
+    }],
+    name: {
+        type: String
+    },
     address: {
         type: String,
         required: true
+    },
+    phone: {
+        type: String
     },
     note: {
         type: String,
@@ -20,6 +29,10 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    timeDelivery: {
+        type: Date,
+        required: true
     }
 }, {
     timestamps: true

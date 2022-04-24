@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const dishSchema = new mongoose.Schema({
     name: {
@@ -10,17 +10,16 @@ const dishSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true,
-        default: 0
-    },
     description: {
         type: String
     },
     image: {
         type: String,
         default: "chua co anh nha huhu"
+    },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     }
 }, {
     timestamps: true

@@ -14,7 +14,9 @@ const orderCtrl = {
     },
     getOrder: async (req, res) => {
         try {
-            const order = await Order.findById(req.params.id);
+            const order = await Order.findById(req.params.id)
+                .populate('orderer')
+                .populate('dishes');
 
             if (!order) {
                 return res.status(404).json("Don dat hang khong ton tai!");
@@ -42,7 +44,7 @@ const orderCtrl = {
                 req.params.id,
                 req.body,
                 { new: true }
-            );
+            ).populate('orderer').populate('dishes');
 
             if (!order) {
                 return res.status(404).json("Don dat hang khong ton tai!")

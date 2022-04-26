@@ -6,6 +6,8 @@ const router = experss.Router();
 const initTableRoute = (app) => {
     router.get('/tables', tableCtrl.getAllTable);
 
+    router.get('/tables/empty', tableCtrl.getTableEmpty);
+
     router.get('/tables/:id', tableCtrl.getTable);
 
     router.post('/tables', tableCtrl.createTable);

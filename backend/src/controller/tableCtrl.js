@@ -23,6 +23,17 @@ const tableCtrl = {
             return res.status(500).json(error);
         }
     },
+    getTableEmpty: async (req, res) => {
+        try {
+            const table = await Table.find({
+                tableStatus: false
+            });
+
+            return res.status(200).json(table);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    },
     createTable: async (req, res) => {
         try {
             const table = await new Table(req.body);

@@ -121,7 +121,7 @@ export const date = ['Hôm nay', 'Ngày mai', 'Ngày kia'];
 export const numberPp = [1,2,3,4,5,6,7,8];
 export const time = [
     '10:00',
-    '10:00',
+    '11:00',
     '10:00',
     '10:00',
     '10:00',
@@ -165,4 +165,4 @@ export const content = [
     '🌐 Website đặt bàn: lauphan.com'
 ]
 
-export const url = ['/login', '/signup', '/order', '/book']
+export const url = ['/login', '/signup', '/order', '/book','/bill']

@@ -1,5 +1,7 @@
 import { Card, Box, Typography, TextField, Button, Backdrop, Dialog } from '@mui/material'
 import React, { useState } from 'react'
+import {useDispatch} from 'react-redux'
+import {setInfoClient} from '../store/Module.action'
 import { Link, useNavigate } from 'react-router-dom'
 import OrderContainerService from '../service/OrderContainer.service'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,6 +16,7 @@ function Login() {
     });
     const [dialog, setDialog] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const service = new OrderContainerService();
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,12 +26,13 @@ function Login() {
         setUser({ ...user, open: true })
         e.preventDefault();
         const rs = await service.login(user);
-        console.log(rs);
+        const {username, phone} = rs.data;
+        dispatch(setInfoClient({username: username, phone: phone}));
         localStorage.setItem("USER_KEY", rs.data?._id);
         localStorage.setItem("USER_ROLE", rs.data?.role);
         setUser({ ...user, open: false, rs: rs });
         if (rs?.data?.err === 2007 || rs?.data?.err === 2001) {
-            setDialog(true)
+            setDialog(true);
         } else {
             navigate('/');
         }
@@ -136,7 +140,7 @@ function Login() {
                             : 'Email này chưa được kích hoạt. Vui lòng kích hoạt tài khoản để đăng nhập.'}
                     </Typography>
                     <Typography textAlign={'center'}>
-                        {!(user.rs?.data?.err === 2001) ?
+                        {!(user.rs?.data?.err === 2001 || user.rs?.data?.err === 2007) ?
                             <CheckCircleOutlineIcon sx={{
                                 color: 'rgb(35,188,35)',
                                 fontSize: 200

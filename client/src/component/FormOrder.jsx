@@ -2,7 +2,7 @@ import {
     Card, Typography,
     TextField, Divider,
     Button, Link,
-    Backdrop, FormControl
+    Backdrop, Dialog
 } from '@mui/material'
 import { Box } from '@mui/system'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import OrderCard from './OrderCard'
 import SelectCard from './SelectCard'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { configDataOrderPost, configPrice } from '../config/order.config.js'
 import { date, time } from '../utils/fakeData'
 import OrderContainerService from '../service/OrderContainer.service'
@@ -24,15 +26,17 @@ function FormOrder(props) {
     const sockjs = new ConnectSocket();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
+    const [dialog, setDialog] = useState(false);
+    const user = useSelector(state => state.infoClient);
     useEffect(() => {
         sockjs.register();
     }, [])
     const dataDistrict = district.map((item, index) => item.district_name);
     const [info, setInfo] = useState({
-        name: '',
+        name: user.username,
         address: '',
         province: '',
-        phone: '',
+        phone: user.phone,
         date: null,
         time: null,
         note: ''
@@ -48,13 +52,17 @@ function FormOrder(props) {
     const handleChange = (e) => {
         const name = e.target.id ? e.target.id : e.target.name;
         const value = e.target.value;
-        console.log(name);
+        console.log(e);
         console.log(value);
         setInfo({ ...info, [name]: value })
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
         const dt = configDataOrderPost(dataOrder, info);
-        if (info.name && info.phone && info.address) {
+        console.log(dt);
+        e.preventDefault();
+        if (!dt.orderer) {
+            setDialog(true);
+        } else if (info.name && info.phone && info.address) {
             setOpen(true);
             const rs = await service.orderFood(dt);
             navigate('/bill', {
@@ -98,6 +106,7 @@ function FormOrder(props) {
                                 fullWidth
                                 variant="standard"
                                 id='name'
+                                value={info.name}
                                 placeholder='Nhập họ tên'
                                 onChange={handleChange}
                                 sx={{ padding: '5px' }}
@@ -145,6 +154,7 @@ function FormOrder(props) {
                                 variant="standard"
                                 required
                                 id='phone'
+                                value={info.phone}
                                 onChange={handleChange}
                                 placeholder='Nhập số điện thoại'
                                 sx={{ padding: '5px' }}
@@ -282,6 +292,34 @@ function FormOrder(props) {
                     >ĐẶT HÀNG</Button>
                 </Card>
             </form>
+            <Dialog
+                open={dialog}
+                onClose={() => {
+                    setDialog(false);
+                }} >
+                <Box sx={{
+                    width: 500,
+
+                    backgroundColor: 'white',
+                    padding: 5
+                }}>
+                    <Typography
+                        fontFamily={'Roboto Slab'}
+                        fontSize={20}
+                        textAlign={'center'}
+                        textTransform={'uppercase'}
+                        paddingBottom={5}
+                        paragraph>
+                        Vui lòng nhập để sử dụng dịch vụ này. Xin cảm ơn!
+                    </Typography>
+                    <Typography textAlign={'center'}>
+                        <SentimentVeryDissatisfiedIcon sx={{
+                            color: 'red',
+                            fontSize: 200
+                        }} />
+                    </Typography>
+                </Box>
+            </Dialog>
             <Backdrop
                 sx={{ color: '#fff', zIndex: 100 }}
                 open={open}

@@ -41,12 +41,9 @@ export const foodReducer = (state = initState, action) => {
                 listFood: data
             }
         case SET_INFO_CLIENT: 
-            const attr = action.payload[0];
-            const value = action.payload[1];
             return {
                 ...state,
-                ...state.infoClient,
-                attr: value,
+                infoClient : action.payload,
             }
         default:
             return state;

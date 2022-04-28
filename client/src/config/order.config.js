@@ -14,7 +14,7 @@ export const configPrice = (data) => {
 }
 
 export const configDataOrderPost = (dataOrder, dataClient) => {
-    const idUser = localStorage.getItem('user');
+    const idUser = localStorage.getItem('USER_KEY');
     const idFood = dataOrder.map((item, index) => {
         const id = item?._id;
         return id;
@@ -57,7 +57,7 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
     const note = dataClient.note;
 
     return {
-        orderer: 1,
+        orderer: idUser,
         dishes: idFood,
         quantity: quanityFood,
         name: name,

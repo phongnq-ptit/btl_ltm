@@ -1,18 +1,24 @@
+import { Box, Button } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import CustomLink from './CustomLink';
-
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
+import { Login } from '@mui/icons-material';
+import {url as arrUrl} from '../utils/fakeData'
 function Header() {
   const url = useLocation();
   const [position, setPosition] = useState('relative');
   const pathname = url.pathname;
-  const color = pathname === '/book' || pathname === '/order'  ? 'rgb(22,41,56)' : '';
-  useEffect(() =>{
-    window.addEventListener('scroll', ()=>{
-      if(window.pageYOffset >= 200){
+  const color = arrUrl.includes(pathname) ? 'rgb(22,41,56)' : '';
+  const handleSignout = () => {
+    localStorage.clear()
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset >= 200) {
         setPosition('fixed');
-      }else{
+      } else {
         setPosition('relative');
       }
     })
@@ -50,6 +56,32 @@ function Header() {
           </li>
         </ul>
       </Nav>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        right: -100
+      }}>
+        <Button
+          sx={{
+            width: 160,
+            height: 40,
+            border: 1,
+            borderColor: 'white',
+            borderRadius: 5
+          }}
+          onClick={handleSignout}
+          endIcon={localStorage.getItem('USER_KEY') ?
+            <Login sx={{ color: 'white', fontSize: 15 }} /> :
+            <PersonOutlineRoundedIcon sx={{ color: 'white', fontSize: 15 }} />}>
+          <Link
+            style={{ textDecoration: 'none', color: 'white' }}
+            to={'/login'}>
+            {localStorage.getItem('USER_KEY') ? 'Đăng xuất' : 'Đăng nhập'}
+          </Link>
+        </Button>
+      </Box>
     </Container>
   )
 }
@@ -75,6 +107,10 @@ const Wrap = styled.div`
     object-position: center;
   }
   transform: translateX(-150px);
+  a{
+    text-decoration: none;
+    color: white;
+  }
 `
 const Nav = styled.div` 
   width: 50%;

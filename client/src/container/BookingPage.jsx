@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import SelectCard from '../component/SelectCard'
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import {
   Backdrop,
   Box,
@@ -41,178 +42,191 @@ function BookingTable() {
     }
   }
   const handleSubmit = async () => {
-    setOpen(true);
-    const data = configDataBookingPost(info);
-    const rs = await service.booking(data);
-    setOpen(false);
-    setDialog(true);
+    let data;
+    if (info.date && info.time && info.phone && info.name) {
+      setOpen(true);
+      data = configDataBookingPost(info);
+      let rs;
+      try {
+        rs = await service.booking(data);
+      } catch (e) {
+        console.log(e);
+      }
+      console.log(rs);
+      setRs(rs);
+      setOpen(false);
+      setDialog(true);
+    }
   }
   return (
     <Container>
       <Typography color={'white'} marginTop={'100px'} fontSize={'30px'} fontFamily={'Roboto Slab'}>ĐẶT BÀN</Typography>
-      <Wrap>
-        <Card >
-          <Bos>
-            <div style={{ width: '90%', }}>
-              <Typography fontFamily={'Roboto Slab'} fontWeight={900}>Nhà hàng</Typography>
-              <ToggleButtonGroup
-                value={store}
-                exclusive
-                id='store'
-                onChange={handleToggle}
-                style={{
-                  width: '80%',
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  marginTop: 50,
-                  padding: 0
-                }}
-              >
-                <ToggleButton
-                  value={'lp'}
-                  id={'store'}
+      <form>
+        <Wrap>
+          <Card >
+            <Bos>
+              <div style={{ width: '90%', }}>
+                <Typography fontFamily={'Roboto Slab'} fontWeight={900}>Nhà hàng</Typography>
+                <ToggleButtonGroup
+                  value={store}
+                  exclusive
+                  id='store'
+                  onChange={handleToggle}
                   style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 50,
-                    backgroundColor: store === 'lp' ? 'rgb(232,74,27)' : 'rgb(183,183,183)',
+                    width: '80%',
                     display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column'
-                  }}>
-                  <img
-                    width={'55%'}
-                    src='https://phanexpress.com/WebLauPhan/order/phan-icon-selected.svg' />
-                  <Typography
-                    fontFamily={'Roboto Slab'}
-                    fontWeight={900}
-                    fontSize={15}
-                    color={'white'}>
-                    Phan
-                  </Typography>
-                </ToggleButton>
-                <ToggleButton
-                  value={'tong'}
-                  id={'store'}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 50,
-                    backgroundColor: store === 'tong' ? 'rgb(249,181,28)' : 'rgb(183,183,183)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column'
-                  }}>
-                  <img
-                    width={'55%'}
-                    src='https://phanexpress.com/WebLauPhan/order/tong-icon.svg' />
-                  <Typography
-                    fontFamily={'Roboto Slab'}
-                    fontWeight={900}
-                    fontSize={15}
-                    color={'white'}>
-                    Phan
-                  </Typography>
-                </ToggleButton>
-                <ToggleButton
-                  value={'ll'}
-                  id={'store'}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 50,
-                    backgroundColor: store === 'll' ? 'rgb(185,60,60)' : 'rgb(183,183,183)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column'
-                  }}>
-                  <img
-                    width={'55%'}
-                    src='https://phanexpress.com/WebLauPhan/order/logo-lau.svg' />
-                  <Typography
-                    fontFamily={'Roboto Slab'}
-                    fontWeight={900}
-                    fontSize={15}
-                    color={'white'}>
-                    Lau
-                  </Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </div>
-          </Bos>
-        </Card>
-        <Card>
-          <Bos>
-            <SelectCard
-              dt={numberPp}
-              label={"Số người"}
-              name={'numberPp'}
-              handleChange={handleChange}
-            />
-          </Bos>
-          <Bos>
-            <SelectCard
-              handleChange={handleChange}
-              label={'Ngày'}
-              name={'date'}
-              dt={date} />
-            <SelectCard
-              handleChange={handleChange}
-              label={'Giờ'}
-              name={'time'}
-              dt={time} />
-          </Bos>
-          <Bos>
-            <div style={{ width: '99%' }}>
-              <Typography fontFamily={'Roboto Slab'} fontWeight={900} >Ghi chú</Typography>
-              <TextField fullWidth variant="standard" id='note' onChange={handleChange} />
-            </div>
-          </Bos>
-        </Card>
-        <Card>
-          <Bos>
-            <div style={{ width: '90%' }}>
-              <Typography fontFamily={'Roboto Slab'} fontWeight={900}>Tên người đặt</Typography>
-              <TextField
-                fullWidth
-                fontFamily={'Roboto Slab'}
-                variant="standard"
-                placeholder='Nhập tên'
-                id='name'
-                required
-                onChange={handleChange} />
-            </div>
-          </Bos>
-          <Bos>
-            <div style={{ width: '90%' }}>
-              <Typography fontFamily={'Roboto Slab'} fontWeight={900} >Số điện thoại</Typography>
-              <TextField
-                fullWidth
-                variant="standard"
-                id='phone'
-                onChange={handleChange}
-                placeholder='Nhập số điện thoại' />
-            </div>
-          </Bos>
-          <Button
-            sx={{
-              width: '340px',
-              height: '45px',
-              background: 'rgb(236,60,23)',
-              color: 'white',
-              borderRadius: '30px',
-              marginTop: '50px',
-            }}
-            onClick={handleSubmit}
-          >
-            Đặt bàn
-          </Button>
-        </Card>
-      </Wrap>
-
+                    justifyContent: 'space-around',
+                    marginTop: 50,
+                    padding: 0
+                  }}
+                >
+                  <ToggleButton
+                    value={'lp'}
+                    id={'store'}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: 50,
+                      backgroundColor: store === 'lp' ? 'rgb(232,74,27)' : 'rgb(183,183,183)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column'
+                    }}>
+                    <img
+                      width={'55%'}
+                      src='https://phanexpress.com/WebLauPhan/order/phan-icon-selected.svg' />
+                    <Typography
+                      fontFamily={'Roboto Slab'}
+                      fontWeight={900}
+                      fontSize={15}
+                      color={'white'}>
+                      Phan
+                    </Typography>
+                  </ToggleButton>
+                  <ToggleButton
+                    value={'tong'}
+                    id={'store'}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: 50,
+                      backgroundColor: store === 'tong' ? 'rgb(249,181,28)' : 'rgb(183,183,183)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column'
+                    }}>
+                    <img
+                      width={'55%'}
+                      src='https://phanexpress.com/WebLauPhan/order/tong-icon.svg' />
+                    <Typography
+                      fontFamily={'Roboto Slab'}
+                      fontWeight={900}
+                      fontSize={15}
+                      color={'white'}>
+                      Phan
+                    </Typography>
+                  </ToggleButton>
+                  <ToggleButton
+                    value={'ll'}
+                    id={'store'}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: 50,
+                      backgroundColor: store === 'll' ? 'rgb(185,60,60)' : 'rgb(183,183,183)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column'
+                    }}>
+                    <img
+                      width={'55%'}
+                      src='https://phanexpress.com/WebLauPhan/order/logo-lau.svg' />
+                    <Typography
+                      fontFamily={'Roboto Slab'}
+                      fontWeight={900}
+                      fontSize={15}
+                      color={'white'}>
+                      Lau
+                    </Typography>
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+            </Bos>
+          </Card>
+          <Card>
+            <Bos>
+              <SelectCard
+                dt={numberPp}
+                label={"Số người"}
+                name={'numberPp'}
+                handleChange={handleChange}
+              />
+            </Bos>
+            <Bos>
+              <SelectCard
+                handleChange={handleChange}
+                label={'Ngày'}
+                name={'date'}
+                dt={date} />
+              <SelectCard
+                handleChange={handleChange}
+                label={'Giờ'}
+                name={'time'}
+                dt={time} />
+            </Bos>
+            <Bos>
+              <div style={{ width: '99%' }}>
+                <Typography fontFamily={'Roboto Slab'} fontWeight={900} >Ghi chú</Typography>
+                <TextField fullWidth variant="standard" id='note' onChange={handleChange} />
+              </div>
+            </Bos>
+          </Card>
+          <Card>
+            <Bos>
+              <div style={{ width: '90%' }}>
+                <Typography fontFamily={'Roboto Slab'} fontWeight={900}>Tên người đặt</Typography>
+                <TextField
+                  fullWidth
+                  fontFamily={'Roboto Slab'}
+                  variant="standard"
+                  placeholder='Nhập tên'
+                  id='name'
+                  required
+                  onChange={handleChange} />
+              </div>
+            </Bos>
+            <Bos>
+              <div style={{ width: '90%' }}>
+                <Typography fontFamily={'Roboto Slab'} fontWeight={900} >Số điện thoại</Typography>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  id='phone'
+                  required
+                  onChange={handleChange}
+                  placeholder='Nhập số điện thoại' />
+              </div>
+            </Bos>
+            <Button
+              sx={{
+                width: '340px',
+                height: '45px',
+                background: 'rgb(236,60,23)',
+                color: 'white',
+                borderRadius: '30px',
+                marginTop: '50px',
+              }}
+              type={'submit'}
+              onClick={handleSubmit}
+            >
+              Đặt bàn
+            </Button>
+          </Card>
+        </Wrap>
+      </form>
       <Backdrop
         sx={{ color: '#fff', zIndex: 100 }}
         open={open}
@@ -226,7 +240,7 @@ function BookingTable() {
         }} >
         <Box sx={{
           width: 500,
-          height: 800,
+
           backgroundColor: 'white',
           padding: 5
         }}>
@@ -236,28 +250,45 @@ function BookingTable() {
             textAlign={'center'}
             textTransform={'uppercase'}
             paddingBottom={5}>
-            Bạn đã đặt bàn thành công
+            {rs?.status < 300 ? 'Bạn đã đặt bàn thành công' : 'Cơ sở tạm thời đã hết bàn rồi :(('}
           </Typography>
           <Typography textAlign={'center'}>
-            <CheckCircleOutlineIcon sx={{
-              color: 'rgb(35,188,35)',
-              fontSize: 200
-            }} />
+            {rs?.status < 300 ?
+              <CheckCircleOutlineIcon sx={{
+                color: 'rgb(35,188,35)',
+                fontSize: 200
+              }} /> :
+              <SentimentVeryDissatisfiedIcon sx={{
+                color: 'red',
+                fontSize: 200
+              }} />
+            }
+
           </Typography>
-          <Typography
-            fontFamily={'Roboto Slab'}
-            fontSize={12}
-            textAlign={'center'}
-            textTransform={'uppercase'}>
-            lưu mã qr dưới đây để lưu thông tin đặt bàn của bạn
-          </Typography>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: 1
-          }}>
-            <QRCode value='http://localhost:3006/book' />
-          </Box>
+          {rs?.status < 300 ? <>
+            <Typography
+              fontFamily={'Roboto Slab'}
+              fontSize={12}
+              textAlign={'center'}
+              textTransform={'uppercase'}>
+              lưu mã qr dưới đây để lưu thông tin đặt bàn của bạn
+            </Typography>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: 1
+            }}>
+              <QRCode value='http://localhost:3006/book' />
+            </Box></> : <Typography
+              fontFamily={'Roboto Slab'}
+              fontSize={15}
+              paragraph
+              textAlign={'center'}
+              fontWeight={900}>
+            Xin lỗi quý khách vì sơ suất của nhà hàng.
+            Cảm phiền quý khách quay lại trong ít giờ nữa.
+            Chân thành cảm ơn quý khách đã ủng hộ.
+          </Typography>}
         </Box>
       </Dialog>
     </Container>

@@ -8,8 +8,9 @@ import Menu from './container/MenuPage';
 import BookingTable from './container/BookingPage';
 import Order from './container/OrderPage';
 import { useDispatch } from 'react-redux';
-import Bill from './component/Bill';
 import BillPage from './container/BillPage';
+import Login from './container/LoginPage';
+import Signup from './container/SignupPage';
 function App() {
   const dispatch = useDispatch();
   return (
@@ -21,6 +22,8 @@ function App() {
           <Route path=':id' element={<Saleoff />} />
         </Route>
         <Route path='/menu' element={<Menu />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/book' element={<BookingTable />} />
         <Route path='/bill' element={<BillPage />} />
         <Route path='/order' element={<Order dispatch={dispatch} />} />

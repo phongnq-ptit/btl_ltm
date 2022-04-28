@@ -164,3 +164,5 @@ export const content = [
     '☎️ Hotline đặt bàn: 19002808',
     '🌐 Website đặt bàn: lauphan.com'
 ]
+
+export const url = ['/login', '/signup', '/order', '/book']

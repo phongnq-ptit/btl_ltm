@@ -15,20 +15,24 @@ class Order extends React.Component {
         this.state = {
             data: [],
             district: [],
-            backdrop: false,
+            open: false,
         }
     }
     componentDidMount = async () => {
+        this.setState({
+            open: true,
+        })
         const data = await this.service.getAllProduct();
         const district = await this.service.getAllDistrict();
         this.setState({
             district: district.data.results,
+            open: false,
         });
-        console.log(new Date().getFullYear()
-            + '-' + (new Date().getMonth() + 1 < 10 ?
-                '0' + (new Date().getMonth() + 1) :
-                new Date().getMonth() + 1)
-            + '-' + (new Date().getDate() + 1));
+        // console.log(new Date().getFullYear()
+        //     + '-' + (new Date().getMonth() + 1 < 10 ?
+        //         '0' + (new Date().getMonth() + 1) :
+        //         new Date().getMonth() + 1)
+        //     + '-' + (new Date().getDate() + 1));
         this.storeToRedux(data.data);
     }
     storeToRedux = (data) => {
@@ -81,6 +85,12 @@ class Order extends React.Component {
                     <FormOder district={this.state.district} handleSubmit={this.handleSubmit} />
                     <MenuCard />
                 </Box>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: 100 }}
+                    open={this.state.open}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Box>
         )
     }

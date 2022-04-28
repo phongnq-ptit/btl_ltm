@@ -2,7 +2,7 @@ import React from 'react'
 import { FormControl, InputLabel, Select, MenuItem, Container, Typography } from '@mui/material'
 function SelectCard(props) {
     const { dt, label, name, handleChange: onChange } = props;
-    const [data, setData] = React.useState();
+    const [data, setData] = React.useState(dt[0]);
     const handleChange = (e) => {
         onChange(e)
         setData(e.target.value);

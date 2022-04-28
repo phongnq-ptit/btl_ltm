@@ -1,4 +1,9 @@
-import { Card, Typography, TextField, Divider, Button, Link,Backdrop } from '@mui/material'
+import {
+    Card, Typography,
+    TextField, Divider,
+    Button, Link,
+    Backdrop, FormControl
+} from '@mui/material'
 import { Box } from '@mui/system'
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { memo, useEffect, useState } from 'react'
@@ -10,7 +15,7 @@ import { configDataOrderPost, configPrice } from '../config/order.config.js'
 import { date, time } from '../utils/fakeData'
 import OrderContainerService from '../service/OrderContainer.service'
 import ConnectSocket from '../socket/ConnectSocket'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { setOrderedFood } from '../store/Module.action'
 function FormOrder(props) {
     const { district } = props;
@@ -48,18 +53,20 @@ function FormOrder(props) {
         setInfo({ ...info, [name]: value })
     }
     const handleSubmit = async () => {
-        setOpen(true);
         const dt = configDataOrderPost(dataOrder, info);
-        const rs = await service.orderFood(dt);
-        navigate('/bill', {
-            state: {
-                orderFood: data,
-                total: total,
-                info: info,
-            }
-        })
-        setOpen(false)
-        dispatch(setOrderedFood([]));
+        if (info.name && info.phone && info.address) {
+            setOpen(true);
+            const rs = await service.orderFood(dt);
+            navigate('/bill', {
+                state: {
+                    orderFood: data,
+                    total: total,
+                    info: info,
+                }
+            })
+            setOpen(false)
+            dispatch(setOrderedFood([]));
+        }
     }
     const card = {
         width: '370px',
@@ -69,206 +76,212 @@ function FormOrder(props) {
     }
     return (
         <Box width={375}>
-            <Card style={card}>
-                <Typography
-                    textTransform={'uppercase'}
-                    fontFamily={'Roboto Slab'}
-                    fontWeight={900}
-                    textAlign={'center'}
-                    marginBottom={'50px'}
-                    variant={'h5'}
-                >Thông tin đặt hàng
-                </Typography>
-                <Bos id='name'>
-                    <div style={{ width: '100%' }}>
-                        <Typography
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}
-                            fontSize={'16px'}
-                            marginBottom={'5px'} >Họ tên</Typography>
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            id='name'
-                            placeholder='Nhập họ tên'
-                            onChange={handleChange}
-                            sx={{ padding: '5px' }}
-                        />
-                    </div>
-                </Bos>
-                <Bos id='address'>
-                    <div style={{ width: '100%' }}>
-                        <Typography
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}
-                            fontSize={'16px'}
-                            marginBottom={'5px'} >Địa chỉ nhận hàng</Typography>
-                        <TextField
-                            fullWidth
-                            id='address'
-                            variant="standard"
-                            onChange={handleChange}
-                            placeholder='Nhập số địa chỉ'
-                            sx={{ padding: '5px' }}
-                        />
-                    </div>
-                </Bos>
-                <Bos id='province'>
-                    <div style={{ width: '100%' }}>
+            <form>
+                <Card style={card}>
+                    <Typography
+                        textTransform={'uppercase'}
+                        fontFamily={'Roboto Slab'}
+                        fontWeight={900}
+                        textAlign={'center'}
+                        marginBottom={'50px'}
+                        variant={'h5'}
+                    >Thông tin đặt hàng
+                    </Typography>
+                    <Bos id='name'>
+                        <div style={{ width: '100%' }}>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}
+                                fontSize={'16px'}
+                                marginBottom={'5px'} >Họ tên</Typography>
+                            <TextField
+                                fullWidth
+                                variant="standard"
+                                id='name'
+                                placeholder='Nhập họ tên'
+                                onChange={handleChange}
+                                sx={{ padding: '5px' }}
+                                required
+                            />
+                        </div>
+                    </Bos>
+                    <Bos id='address'>
+                        <div style={{ width: '100%' }}>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}
+                                fontSize={'16px'}
+                                marginBottom={'5px'} >Địa chỉ nhận hàng</Typography>
+                            <TextField
+                                fullWidth
+                                id='address'
+                                variant="standard"
+                                onChange={handleChange}
+                                placeholder='Nhập số địa chỉ'
+                                sx={{ padding: '5px' }}
+                                required
+                            />
+                        </div>
+                    </Bos>
+                    <Bos id='province'>
+                        <div style={{ width: '100%' }}>
+                            <SelectCard
+                                handleChange={handleChange}
+                                label={'Quận'}
+                                name={'province'}
+                                dt={dataDistrict}
+                            />
+                        </div>
+                    </Bos>
+                    <Bos id='phonenumber'>
+                        <div style={{ width: '100%' }}>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}
+                                fontSize={'16px'}
+                                marginBottom={'5px'} >Số điện thoại</Typography>
+                            <TextField
+                                fullWidth
+                                variant="standard"
+                                required
+                                id='phone'
+                                onChange={handleChange}
+                                placeholder='Nhập số điện thoại'
+                                sx={{ padding: '5px' }}
+                            />
+                        </div>
+                    </Bos>
+                    <Bos>
                         <SelectCard
                             handleChange={handleChange}
-                            label={'Quận'}
-                            name={'province'}
-                            dt={dataDistrict}
-                        />
-                    </div>
-                </Bos>
-                <Bos id='phonenumber'>
-                    <div style={{ width: '100%' }}>
-                        <Typography
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}
-                            fontSize={'16px'}
-                            marginBottom={'5px'} >Số điện thoại</Typography>
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            id='phone'
-                            onChange={handleChange}
-                            placeholder='Nhập số điện thoại'
-                            sx={{ padding: '5px' }}
-                        />
-                    </div>
-                </Bos>
-                <Bos>
-                    <SelectCard
-                        handleChange={handleChange}
-                        label={'Ngày'}
-                        name={'date'}
-                        dt={date} />
-                    <SelectCard
-                        handleChange={handleChange}
-                        label={'Giờ giao'}
-                        name={'time'}
-                        dt={time} />
-                </Bos>
-                <Bos id='note'>
-                    <div style={{ width: '100%' }}>
-                        <Typography
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}
-                            fontSize={'16px'}
-                            marginBottom={'5px'} >Ghi chú</Typography>
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            id='note'
-                            onChange={handleChange}
-                            placeholder='Nhập ghi chú'
-                            sx={{ padding: '5px' }}
-                        />
-                    </div>
-                </Bos>
-            </Card>
-            <Card sx={{
-                width: '370px',
-                padding: '20px',
-                borderRadius: '25px',
-                marginRight: '40px',
-                marginTop: '30px',
-                display: data.length > 0 ? '' : 'none',
-            }}>
-                <Box sx={{
-                    width: '100%',
-                    maxHeight: '390px',
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    marginBottom: 5
+                            label={'Ngày'}
+                            name={'date'}
+                            dt={date} />
+                        <SelectCard
+                            handleChange={handleChange}
+                            label={'Giờ giao'}
+                            name={'time'}
+                            dt={time} />
+                    </Bos>
+                    <Bos id='note'>
+                        <div style={{ width: '100%' }}>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}
+                                fontSize={'16px'}
+                                marginBottom={'5px'} >Ghi chú</Typography>
+                            <TextField
+                                fullWidth
+                                variant="standard"
+                                id='note'
+                                onChange={handleChange}
+                                placeholder='Nhập ghi chú'
+                                sx={{ padding: '5px' }}
+                            />
+                        </div>
+                    </Bos>
+                </Card>
+                <Card sx={{
+                    width: '370px',
+                    padding: '20px',
+                    borderRadius: '25px',
+                    marginRight: '40px',
+                    marginTop: '30px',
+                    display: data.length > 0 ? '' : 'none',
                 }}>
-                    {data.map((item, index) => (
-                        <OrderCard data={item} key={index} />
-                    ))}
-                </Box>
-                <Divider />
-                <Box>
                     <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        paddingTop: 2,
+                        width: '100%',
+                        maxHeight: '390px',
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        marginBottom: 5
                     }}>
-                        <Typography
-                            padding={0}
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}>Tổng hóa đơn</Typography>
-                        <Typography
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}>{configPrice(total)}</Typography>
+                        {data.map((item, index) => (
+                            <OrderCard data={item} key={index} />
+                        ))}
                     </Box>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        paddingTop: 2,
-                    }}>
+                    <Divider />
+                    <Box>
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            paddingTop: 2,
+                        }}>
+                            <Typography
+                                padding={0}
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}>Tổng hóa đơn</Typography>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}>{configPrice(total)}</Typography>
+                        </Box>
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            paddingTop: 2,
+                        }}>
+                            <Typography
+                                padding={0}
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}>Giảm giá khuyến mại</Typography>
+                            <Typography fontFamily={'Roboto Slab'}
+                                fontWeight={900}>{configPrice(0)}</Typography>
+                        </Box>
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            paddingTop: 2,
+                        }}>
+                            <Typography
+                                padding={0}
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}>VAT</Typography>
+                            <Typography
+                                fontFamily={'Roboto Slab'}
+                                fontWeight={900}>{configPrice(Math.round(total * 0.03))}</Typography>
+                        </Box>
                         <Typography
-                            padding={0}
                             fontFamily={'Roboto Slab'}
-                            fontWeight={900}>Giảm giá khuyến mại</Typography>
-                        <Typography fontFamily={'Roboto Slab'}
-                            fontWeight={900}>{configPrice(0)}</Typography>
-                    </Box>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        paddingTop: 2,
-                    }}>
-                        <Typography
-                            padding={0}
-                            fontFamily={'Roboto Slab'}
-                            fontWeight={900}>VAT</Typography>
+                            fontWeight={900}
+                            fontSize={20}
+                            textAlign={'center'}
+                            textTransform={'uppercase'}
+                            paddingTop={2}
+                        >
+                            số tiền cần thanh toán
+                        </Typography>
                         <Typography
                             fontFamily={'Roboto Slab'}
-                            fontWeight={900}>{configPrice(Math.round(total * 0.03))}</Typography>
+                            fontWeight={900}
+                            fontSize={20}
+                            textAlign={'center'}
+                            textTransform={'uppercase'}
+                            paddingTop={1}
+                            color={'rgb(255,114,22)'}
+                        >
+                            {configPrice(Math.round(total * 1.03))}
+                        </Typography>
                     </Box>
                     <Typography
+                        padding={0}
                         fontFamily={'Roboto Slab'}
-                        fontWeight={900}
-                        fontSize={20}
-                        textAlign={'center'}
-                        textTransform={'uppercase'}
-                        paddingTop={2}
-                    >
-                        số tiền cần thanh toán
-                    </Typography>
-                    <Typography
-                        fontFamily={'Roboto Slab'}
-                        fontWeight={900}
-                        fontSize={20}
-                        textAlign={'center'}
-                        textTransform={'uppercase'}
-                        paddingTop={1}
-                        color={'rgb(255,114,22)'}
-                    >
-                        {configPrice(Math.round(total * 1.03))}
-                    </Typography>
-                </Box>
-                <Typography
-                    padding={0}
-                    fontFamily={'Roboto Slab'}
-                    fontWeight={500}
-                    textAlign={'center'}>(Giá trên chưa bao gồm phí vận chuyển)</Typography>
-                <Button
-                    onClick={handleSubmit}
-                    sx={{
-                        width: '300px',
-                        height: '40px',
-                        background: 'rgb(255,114,22)',
-                        color: 'white',
-                        borderRadius: '30px',
-                        marginTop: 3,
-                        marginLeft: 2
-                    }}
-                >ĐẶT HÀNG</Button>
-            </Card>
+                        fontWeight={500}
+                        textAlign={'center'}>(Giá trên chưa bao gồm phí vận chuyển)</Typography>
+                    <Button
+                        onClick={handleSubmit}
+                        type={'submit'}
+                        sx={{
+                            width: '300px',
+                            height: '40px',
+                            background: 'rgb(255,114,22)',
+                            color: 'white',
+                            borderRadius: '30px',
+                            marginTop: 3,
+                            marginLeft: 2
+                        }}
+                    >ĐẶT HÀNG</Button>
+                </Card>
+            </form>
             <Backdrop
                 sx={{ color: '#fff', zIndex: 100 }}
                 open={open}

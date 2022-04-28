@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import {url as arrUrl} from '../utils/fakeData'
 function Footer() {
   const url = useLocation();
   const pathname = url.pathname;
-  const color = pathname === '/book' || pathname === '/order'  ? 'rgb(22,41,56)' : 'rgb(255,114,22)';
+  const color = arrUrl.includes(pathname)  ? 'rgb(22,41,56)' : 'rgb(255,114,22)';
   return (
     <Container style={{backgroundColor: `${color}`}}>
       <Wrap>

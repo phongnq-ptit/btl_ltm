@@ -74,7 +74,6 @@ const bookingCtrl = {
             if (!booking) {
                 return res.status(404).json("Don dat ban khong ton tai!")
             }
-
             return res.status(200).json("Xoa don dat ban thanh cong thanh cong!");
         } catch (error) {
             return res.status(500).json(error);

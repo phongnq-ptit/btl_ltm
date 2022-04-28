@@ -1,16 +1,11 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
     password: {
         type: String,
         required: true
     },
-    fullName: {
+    username: {
         type: String
     },
     email: {
@@ -32,7 +27,7 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         required: true,
-        unique: true
+        // unique: true
     },
     isActive: {
         type: Boolean,
@@ -47,11 +42,11 @@ const userSchema = new mongoose.Schema({
 });
 
 // đặt chỉ số cho user
-userSchema.index({ fullName: 'text' });
+userSchema.index({ username: 'text' });
 
 const User = mongoose.model('User', userSchema);
 
 // khởi tạo chỉ số
-User.createIndexes({ fullName: 'text' });
+User.createIndexes({ username: 'text' });
 
 export default User;

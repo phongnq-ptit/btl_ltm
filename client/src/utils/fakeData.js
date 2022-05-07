@@ -165,4 +165,287 @@ export const content = [
     '🌐 Website đặt bàn: lauphan.com'
 ]
 
-export const url = ['/login', '/signup', '/order', '/book','/bill']
+export const url = ['/login', '/signup', '/order', '/book','/bill','/userinfo', '/history'];
+
+export const rows = [
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 5,
+        name: 'Than Van Long',
+        createAt: new Date().toLocaleDateString(),
+        deliveryAt: new Date().toLocaleDateString(),
+        total: 1000000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 6,
+        name: 'Long Van Than',
+        createAt: new Date(2022, 4, 29).toLocaleDateString(),
+        deliveryAt: new Date().toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    },
+    {
+        data: {
+            name: 'Bò lúc lắc sốt tiêu đen',
+            description: 'Định lượng: 300g',
+            image: 'https://cdn.lauphan.com/photo-storage/myFile-1640706124113.jpeg',
+            quanity: 0,
+            price: 105000
+        },
+        quantity: 4,
+        name: 'Nguyen Van A',
+        createAt: new Date(2022, 4, 23).toLocaleDateString(),
+        deliveryAt: new Date(2022, 2, 9).toLocaleDateString(),
+        total: 1100000,
+    }
+]

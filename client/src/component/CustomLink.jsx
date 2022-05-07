@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import {
     Link, useLocation, useMatch,
     useResolvedPath,
@@ -17,4 +17,4 @@ function CustomLink({ to, title }) {
     )
 }
 
-export default CustomLink
+export default memo(CustomLink)

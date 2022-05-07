@@ -14,7 +14,7 @@ export const configPrice = (data) => {
 }
 
 export const configDataOrderPost = (dataOrder, dataClient) => {
-    const idUser = localStorage.getItem('USER_KEY');
+    const idUser = sessionStorage.getItem('USER_KEY');
     const idFood = dataOrder.map((item, index) => {
         const id = item?._id;
         return id;
@@ -34,15 +34,15 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
                 + '-' + new Date().getDate()
-                + 'T' + dataClient.time + ':00Z'
+                + 'T' + dataClient.time + ':00'
             break;
         case "Ngày mai":
             time = new Date().getFullYear()
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + (new Date().getDate() + 1)
-                + 'T' + dataClient.time + ':00Z'
+                + '-' + '0'+ (new Date().getDate() + 1)
+                + 'T' + dataClient.time + ':00'
             break;
         case "Ngày kia":
             time = new Date().getFullYear()
@@ -50,7 +50,7 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
                 + '-' + (new Date().getDate() + 2)
-                + 'T' + dataClient.time + ':00Z'
+                + 'T' + dataClient.time + ':00'
             break;
     }
     console.log(time);
@@ -79,7 +79,7 @@ export const configDataBookingPost = (data) => {
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
                 + '-' + new Date().getDate()
-                + 'T' + data.time + ':00Z'
+                + 'T' + data.time + ':00'
             break;
         case "Ngày mai":
             time = new Date().getFullYear()
@@ -87,7 +87,7 @@ export const configDataBookingPost = (data) => {
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
                 + '-' + (new Date().getDate() + 1)
-                + 'T' + data.time + ':00Z'
+                + 'T' + data.time + ':00'
             break;
         case "Ngày kia":
             time = new Date().getFullYear()
@@ -95,7 +95,7 @@ export const configDataBookingPost = (data) => {
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
                 + '-' + (new Date().getDate() + 2)
-                + 'T' + data.time + ':00Z'
+                + 'T' + data.time + ':00'
             break;
     }
     const note = data.note;

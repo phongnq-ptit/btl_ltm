@@ -1,12 +1,11 @@
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography, Box, CardMedia, Backdrop } from '@mui/material'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Bill from '../component/Bill'
 function BillPage() {
     const location = useLocation();
     const data = location?.state;
-    console.log(data);
     return (
         <Box sx={{
             backgroundImage: `url('https://phanexpress.com/WebLauPhan/order/bg-order.png')`,

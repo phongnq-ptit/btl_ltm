@@ -11,32 +11,41 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import OrderCard from './OrderCard'
 import SelectCard from './SelectCard'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { configDataOrderPost, configPrice } from '../config/order.config.js'
 import { date, time } from '../utils/fakeData'
 import OrderContainerService from '../service/OrderContainer.service'
-import ConnectSocket from '../socket/ConnectSocket'
 import { useNavigate } from 'react-router-dom'
+import { over } from 'stompjs'
+import SockJS from 'sockjs-client'
 import { setOrderedFood } from '../store/Module.action'
 function FormOrder(props) {
     const { district } = props;
     const navigate = useNavigate();
     const service = new OrderContainerService();
-    const sockjs = new ConnectSocket();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [dialog, setDialog] = useState(false);
-    const user = useSelector(state => state.infoClient);
+    const user = useSelector(state => state?.infoClient);
+    const [sockjs, setSockjs] = useState();
     useEffect(() => {
-        sockjs.register();
+        const sockjs = new SockJS('https://wsocketlong.herokuapp.com/websocket')
+        let stompjs = over(sockjs);
+        setSockjs(stompjs)
+        stompjs.connect({}, () => {
+            stompjs.subscribe('/user/3/private', (payload) => {
+                console.log(payload);
+            })
+        }, (e) => {
+            console.log(e);
+        });
     }, [])
     const dataDistrict = district.map((item, index) => item.district_name);
     const [info, setInfo] = useState({
         name: user.username,
         address: '',
         province: '',
-        phone: user.phone,
+        phone: user?.phone,
         date: null,
         time: null,
         note: ''
@@ -52,19 +61,28 @@ function FormOrder(props) {
     const handleChange = (e) => {
         const name = e.target.id ? e.target.id : e.target.name;
         const value = e.target.value;
-        console.log(e);
-        console.log(value);
         setInfo({ ...info, [name]: value })
     }
+
+    const sendOrder = (data) => {
+        sockjs.send('/app/private-message/3', {},
+            JSON.stringify(data))
+    }
+
     const handleSubmit = async (e) => {
+        e.preventDefault()
+        //e.stopImmediatePropagation();
         const dt = configDataOrderPost(dataOrder, info);
         console.log(dt);
-        e.preventDefault();
-        if (!dt.orderer) {
+        if (dt.orderer.length <= 0) {
             setDialog(true);
-        } else if (info.name && info.phone && info.address) {
+            console.log('say why');
+        } 
+        if (info.name && info.phone && info.address) {
             setOpen(true);
             const rs = await service.orderFood(dt);
+            sendOrder(rs.data)
+            console.log(rs);
             navigate('/bill', {
                 state: {
                     orderFood: data,
@@ -310,7 +328,7 @@ function FormOrder(props) {
                         textTransform={'uppercase'}
                         paddingBottom={5}
                         paragraph>
-                        Vui lòng nhập để sử dụng dịch vụ này. Xin cảm ơn!
+                        Vui lòng đăng nhập để sử dụng dịch vụ này. Xin cảm ơn!
                     </Typography>
                     <Typography textAlign={'center'}>
                         <SentimentVeryDissatisfiedIcon sx={{

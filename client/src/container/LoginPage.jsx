@@ -16,7 +16,6 @@ function Login() {
     });
     const [dialog, setDialog] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const service = new OrderContainerService();
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,10 +25,8 @@ function Login() {
         setUser({ ...user, open: true })
         e.preventDefault();
         const rs = await service.login(user);
-        const {username, phone} = rs.data;
-        dispatch(setInfoClient({username: username, phone: phone}));
-        localStorage.setItem("USER_KEY", rs.data?._id);
-        localStorage.setItem("USER_ROLE", rs.data?.role);
+        console.log(rs);
+        sessionStorage.setItem("USER_KEY", rs.data?._id);
         setUser({ ...user, open: false, rs: rs });
         if (rs?.data?.err === 2007 || rs?.data?.err === 2001) {
             setDialog(true);
@@ -84,7 +81,7 @@ function Login() {
                         }} />
                     <Typography fontSize={15} fontFamily={'Roboto Slab'} paddingBottom={7}>
                         Bạn quên mật khẩu ?
-                        <Link to={'/signup'}>bạn ngu vl</Link>
+                        <Link to={'/signup'}> bạn ngu vl</Link>
                     </Typography>
                     <Box sx={{
                         width: '100%',
@@ -98,7 +95,7 @@ function Login() {
                                 width: 200,
                                 height: 50,
                                 border: 1,
-                                backgroundColor: 'rgb(255,114,22)',
+                                backgroundColor: 'rgb(22,41,56)',
                                 borderColor: 'white',
                                 borderRadius: 6,
                                 color: 'white',
@@ -113,8 +110,8 @@ function Login() {
                         textAlign={'center'}
                         paddingTop={7}
                         paddingBottom={1}>
-                        Bạn chưa có tải khoản đăng kí
-                        <Link to={'/signup'}> tại đây</Link>
+                        Bạn chưa có tài khoản? Đăng kí&nbsp;
+                        <Link to={'/signup'}>tại đây</Link>
                     </Typography>
                 </Card>
             </form>

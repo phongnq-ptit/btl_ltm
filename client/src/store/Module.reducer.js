@@ -1,8 +1,9 @@
-import { INIT_ORDERED_FOOD, SET_ORDERED_FOOD, SET_INFO_CLIENT } from "./Module.action";
+import { INIT_ORDERED_FOOD, SET_ORDERED_FOOD, SET_INFO_CLIENT, SET_SOCKJS } from "./Module.action";
 
 const initState = {
     listFood: [],
     infoClient: [],
+    sockjs: {}
 }
 
 export const foodReducer = (state = initState, action) => {
@@ -45,6 +46,12 @@ export const foodReducer = (state = initState, action) => {
                 ...state,
                 infoClient : action.payload,
             }
+        case SET_SOCKJS: {
+            return{
+                ...state,
+                sockjs: action.payload,
+            }
+        }
         default:
             return state;
     }

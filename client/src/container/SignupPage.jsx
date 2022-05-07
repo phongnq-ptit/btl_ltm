@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import OrderContainerService from '../service/OrderContainer.service'
 import CircularProgress from '@mui/material/CircularProgress';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { useSelector } from 'react-redux';
 function Signup() {
     const [user, setUser] = useState({
         username: '',
@@ -14,6 +15,7 @@ function Signup() {
         open: false,
         rs: {}
     });
+    useSelector(state => console.log(state))
     const [dialog, setDialog] = useState(false);
     const service = new OrderContainerService();
     const handleChange = (e) => {
@@ -115,7 +117,7 @@ function Signup() {
                                 width: 200,
                                 height: 50,
                                 border: 1,
-                                backgroundColor: 'rgb(255,114,22)',
+                                backgroundColor: 'rgb(22,41,56)',
                                 borderColor: 'white',
                                 borderRadius: 6,
                                 color: 'white',

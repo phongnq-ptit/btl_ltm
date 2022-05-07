@@ -3,7 +3,7 @@ import React from "react";
 class OrderContainerService extends React.Component {
     constructor(props) {
         super(props)
-        const url = 'https://f74a-2402-9d80-273-f7b1-a46f-c2c0-8a89-a60f.ngrok.io/api';
+        const url = 'http://localhost:5000/api';
         this.apiUrl = url;
 
     }
@@ -42,6 +42,14 @@ class OrderContainerService extends React.Component {
                 .post(this.apiUrl + '/register',
                     data)
         
+        return dt;
+    }
+    async getUserById(data){
+        const dt = await axios.get(this.apiUrl + '/users/' + data);
+        return dt;
+    }
+    async updateUser(data){
+        const dt = await axios.put(this.apiUrl + '/users/update', data);
         return dt;
     }
 }

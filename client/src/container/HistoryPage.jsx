@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Box } from '@mui/system'
 import {
     Card, Table,
@@ -10,12 +10,25 @@ import {
 import { configPrice } from '../config/order.config'
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { rows } from '../utils/fakeData'
+import OrderContainerService from '../service/OrderContainer.service';
 function HistoryPage() {
     const [sort, setSort] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const service = new OrderContainerService();
+    const dt = useRef([]);
+    const [data, setData] = React.useState([]);
+    const callAPI = useCallback(
+        async () => {
+            await service.getOrder(sessionStorage.getItem('USER_KEY')).then(res => {
+                setData(res.data.slice(rowsPerPage * page, rowsPerPage * (page + 1)))
+            });
+        }, [])
+    useEffect(() => {
+        callAPI();
+        console.log(dt.current);
+    }, [])
 
-    const [data, setData] = React.useState(rows.slice(rowsPerPage * page, rowsPerPage * (page + 1)));
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
         setData(rows.slice(rowsPerPage * newPage, rowsPerPage * (newPage + 1)));
@@ -38,13 +51,17 @@ function HistoryPage() {
         setData(temp);
         setSort(!sort)
     }
+    const [tmp, setTmp] = React.useState([])
+
     const Food = ({ data }) => {
+        console.log(data);
         return (
             <Box sx={{
                 width: 250,
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'flex-start'
+                alignItems: 'flex-start',
+                marginBlock: 1
             }}>
                 <img width={60}
                     src={data.image} />
@@ -53,7 +70,7 @@ function HistoryPage() {
                         fontFamily={'Roboto Slab'}
                         paddingLeft={2}
                         fontWeight={900}>
-                        {data?.name.slice(0, 20)}...
+                        {data?.name.slice(0, 15)}...
                     </Typography><Typography
                         fontFamily={'Roboto Slab'}
                         paddingTop={2}
@@ -176,29 +193,36 @@ function HistoryPage() {
                             </TableRow>
                         </TableHead>
                         <TableBody sx={{ overflowY: 'auto' }}>
-                            {data.map((item, index) => (
-                                <TableRow>
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell sx={{ width: 350, paddingLeft: 0 }}>
-                                        <Food data={item.data} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.quantity}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.name}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.createAt}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.deliveryAt}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{configPrice(item.total)}</Typography>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {data.map((item, index) => {
+                                console.log(item);
+                                return (
+                                    <TableRow>
+                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell sx={{ width: 350, paddingLeft: 0 }}>
+                                            {item?.dishes.map((it, index) => (
+                                                <Food data={it} />
+                                            ))}
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.quantity.map((it, index) => (
+                                                <Typography fontFamily={'Roboto Slab'} paddingBottom={5} fontWeight={900} >{it}</Typography>
+                                            ))}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.name}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.updatedAt}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.timeDelivery}</Typography>
+                                        </TableCell>
+                                        {/* <TableCell>
+                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{configPrice(item.total)}</Typography>
+                                        </TableCell> */}
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>

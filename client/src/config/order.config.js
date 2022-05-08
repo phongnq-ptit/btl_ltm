@@ -109,3 +109,4 @@ export const configDataBookingPost = (data) => {
         arrivalDay: time,
     }
 }
+

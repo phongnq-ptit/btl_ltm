@@ -52,6 +52,11 @@ class OrderContainerService extends React.Component {
         const dt = await axios.put(this.apiUrl + '/users/update', data);
         return dt;
     }
+
+    async getOrder(url){
+        const dt = await axios.get(this.apiUrl + '/orders/c-id/' + url);
+        return dt;
+    }
 }
 
 export default OrderContainerService;

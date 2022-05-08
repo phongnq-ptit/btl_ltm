@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Divider, Typography } from '@mui/material';
+import { Box, Button, Dialog, Divider, Typography, Backdrop, CircularProgress } from '@mui/material';
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -24,20 +24,23 @@ function Header() {
   const navigate = useNavigate();
   const service = new OrderContainerService();
   const [user, setUser] = useState();
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const handleSignout = () => {
     sessionStorage.clear();
     setDialog(false);
     navigate('/login');
   }
-  const temp  = sessionStorage.getItem('USER_KEY')
+  const temp = sessionStorage.getItem('USER_KEY')
   const tmp = useCallback(async () => {
-    return await service.getUserById(temp)
+    setOpen(true);
+    await service.getUserById(temp)
       .then(res => {
         dispatch(setInfoClient(res.data));
         console.log(res.data);
         return setUser(res.data)
       })
+    setOpen(false);
   }, []);
 
   useEffect(() => {
@@ -54,7 +57,7 @@ function Header() {
       //console.log(user);
       //dispatch(setInfoClient(user))
     }
-  },[])
+  }, [])
   return (
     <Container
       style={{
@@ -153,7 +156,7 @@ function Header() {
             </Typography>
             <Button
               startIcon={<SettingsOutlinedIcon />}
-              onClick={()=>{setDialog(false)}}
+              onClick={() => { setDialog(false) }}
               sx={{
                 width: 300,
                 display: 'flex',
@@ -172,7 +175,7 @@ function Header() {
             <Divider />
             <Button
               startIcon={<AvTimerOutlinedIcon />}
-              onClick={()=>{setDialog(false)}}
+              onClick={() => { setDialog(false) }}
               sx={{
                 width: 300,
                 display: 'flex',
@@ -181,7 +184,7 @@ function Header() {
                 paddingBottom: 2,
                 color: 'rgb(22,41,56)',
               }} >
-              <Link to={'/'}
+              <Link to={'/history'}
                 style={{
                   textDecoration: 'none',
                   color: 'rgb(22,41,56)',
@@ -191,7 +194,7 @@ function Header() {
             <Divider />
             <Button
               startIcon={<FastfoodOutlinedIcon />}
-              onClick={()=>{setDialog(false)}}
+              onClick={() => { setDialog(false) }}
               sx={{
                 width: 300,
                 display: 'flex',
@@ -223,6 +226,12 @@ function Header() {
             </Button>
           </Box>
         </Dialog>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: 100 }}
+          open={open}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
     </Container>
   )

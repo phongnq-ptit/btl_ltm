@@ -3,9 +3,10 @@ import { Box } from '@mui/system'
 import React from 'react'
 import OrderCard from './OrderCard'
 import { useSelector } from 'react-redux'
-function MenuCard() {
-  const arr = [1, 2, 3, 4, 5]
+import OrderContainerService from '../service/OrderContainer.service'
+function MenuCard({category}) {
   const dataOrder = useSelector(state => state.listFood);
+  console.log(category);
   return (
     <Card
       sx={{
@@ -23,7 +24,7 @@ function MenuCard() {
         variant={'h5'}
       >Thông tin món ăn
       </Typography>
-      {arr.map((item, index) => (
+      {category.map((item, index) => (
         <Box key={item}>
           <Typography
             textTransform={'uppercase'}
@@ -31,16 +32,18 @@ function MenuCard() {
             fontFamily={'Roboto Slab'}
             fontWeight={900}
             sx={{ backgroundColor: 'rgb(255,114,22)', paddingLeft: 5 }}
-          >món đặc biệt</Typography>
+          >{item.categoryName}</Typography>
           <div style={{
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-around'
           }}>
-            {dataOrder.map((item, index) => (
-              <OrderCard data={item} key={index} />
-            ))}
+            {dataOrder.map((it, index) => {
+              if(item.categoryName === it.category.categoryName){
+                return <OrderCard data={it} key={index} />
+              }
+            })}
           </div>
         </Box>
       ))}

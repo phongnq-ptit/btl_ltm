@@ -10,14 +10,14 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 function UserPage() {
     const [dialog, setDialog] = useState(false);
-    const { email, phone, username, address } = useSelector(state => state?.infoClient);
+    const { email, phonenumber, username, address } = useSelector(state => state?.infoClient);
     console.log('re render');
     const [user, setUser] = useState({
-        email: email,
+        email: "no email" ,
         password: '************',
         name: username,
         address: address,
-        phone: phone,
+        phone: phonenumber,
         open: false,
         editable: false,
         rs: {}

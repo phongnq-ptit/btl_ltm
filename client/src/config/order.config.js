@@ -41,7 +41,7 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + '0'+ (new Date().getDate() + 1)
+                + '-' + '0'+ (new Date().getDate())
                 + 'T' + dataClient.time + ':00'
             break;
         case "Ngày kia":
@@ -86,7 +86,7 @@ export const configDataBookingPost = (data) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + (new Date().getDate() + 1)
+                + '-' + (new Date().getDate() )
                 + 'T' + data.time + ':00'
             break;
         case "Ngày kia":
@@ -107,6 +107,15 @@ export const configDataBookingPost = (data) => {
         note: note,
         phone: phone,
         arrivalDay: time,
+        name: data.name,
+        booker: sessionStorage.getItem('USER_KEY')
     }
 }
 
+export const configPhoneNumber = (phonenumber) =>{
+    if(phonenumber.length == 10){
+        return '+84'+ (phonenumber +'').substring(1, (phonenumber +'').length);
+    }else if(phonenumber.length == 12){
+        return phonenumber;
+    }
+}

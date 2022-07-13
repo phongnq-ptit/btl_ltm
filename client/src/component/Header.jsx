@@ -15,6 +15,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderContainerService from '../service/OrderContainer.service';
 import { setInfoClient } from '../store/Module.action';
+import jwtDecode from 'jwt-decode';
 function Header() {
   const url = useLocation();
   const [position, setPosition] = useState('relative');
@@ -23,25 +24,33 @@ function Header() {
   const color = arrUrl.includes(pathname) ? 'rgb(22,41,56)' : '';
   const navigate = useNavigate();
   const service = new OrderContainerService();
-  const [user, setUser] = useState();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const decode = localStorage.getItem("USER_KEY") ?
+    (jwtDecode(localStorage.getItem("USER_KEY")).sub + '').split('-') : []
+  const [user, setUser] = useState({
+    username: decode[1],
+    phone: decode[0],
+    address: decode[2]
+  });
+
+  console.log(user);
   const handleSignout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     setDialog(false);
     navigate('/login');
   }
-  const temp = sessionStorage.getItem('USER_KEY')
-  const tmp = useCallback(async () => {
-    setOpen(true);
-    await service.getUserById(temp)
-      .then(res => {
-        dispatch(setInfoClient(res.data));
-        console.log(res.data);
-        return setUser(res.data)
-      })
-    setOpen(false);
-  }, []);
+  // const temp = localStorage.getItem('USER_KEY')
+  // const tmp = useCallback(async () => {
+  //   setOpen(true);
+  //   await service.getUserById(temp)
+  //     .then(res => {
+  //       dispatch(setInfoClient(res.data));
+  //       console.log(res.data);
+  //       return setUser(res.data)
+  //     })
+  //   setOpen(false);
+  // }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -51,9 +60,9 @@ function Header() {
         setPosition('relative');
       }
     });
-    if (sessionStorage.length > 0) {
+    if (localStorage.length > 0) {
       console.log('call api');
-      tmp();
+      // tmp();
       //console.log(user);
       //dispatch(setInfoClient(user))
     }
@@ -104,7 +113,7 @@ function Header() {
             display: 'flex',
             justifyContent: 'center',
           }}>
-          {sessionStorage.length > 0 ?
+          {localStorage.length > 0 ?
             <Button
               startIcon={<MailOutlineIcon />}
               endIcon={<KeyboardArrowDownIcon />}
@@ -184,7 +193,7 @@ function Header() {
                 paddingBottom: 2,
                 color: 'rgb(22,41,56)',
               }} >
-              <Link to={'/history'}
+              <Link to={'/'}
                 style={{
                   textDecoration: 'none',
                   color: 'rgb(22,41,56)',

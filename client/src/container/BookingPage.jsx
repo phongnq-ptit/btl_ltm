@@ -41,19 +41,23 @@ function BookingTable() {
       setStore(data);
     }
   }
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     let data;
     if (info.date && info.time && info.phone && info.name) {
       setOpen(true);
       data = configDataBookingPost(info);
+      console.log(data);
       let rs;
       try {
         rs = await service.booking(data);
+        setRs(rs.data);
+        
+        console.log();
       } catch (e) {
         console.log(e);
       }
       console.log(rs);
-      setRs(rs);
       setOpen(false);
       setDialog(true);
     }
@@ -61,7 +65,7 @@ function BookingTable() {
   return (
     <Container>
       <Typography color={'white'} marginTop={'100px'} fontSize={'30px'} fontFamily={'Roboto Slab'}>ĐẶT BÀN</Typography>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Wrap>
           <Card >
             <Bos>
@@ -220,7 +224,7 @@ function BookingTable() {
                 marginTop: '50px',
               }}
               type={'submit'}
-              onClick={handleSubmit}
+              // onClick={handleSubmit}
             >
               Đặt bàn
             </Button>
@@ -278,7 +282,7 @@ function BookingTable() {
               justifyContent: 'center',
               padding: 1
             }}>
-              <QRCode value='http://localhost:3006/book' />
+              <QRCode value={'http://localhost:3000/book/' + rs._id} />
             </Box></> : <Typography
               fontFamily={'Roboto Slab'}
               fontSize={15}

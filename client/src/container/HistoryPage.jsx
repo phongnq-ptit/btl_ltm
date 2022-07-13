@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { Box } from '@mui/system'
 import {
     Card, Table,
@@ -9,25 +9,27 @@ import {
 } from '@mui/material'
 import { configPrice } from '../config/order.config'
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import { rows } from '../utils/fakeData'
 import OrderContainerService from '../service/OrderContainer.service';
 function HistoryPage() {
     const [sort, setSort] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const service = new OrderContainerService();
-    const dt = useRef([]);
-    const [data, setData] = React.useState([]);
+    const [rows, setRows] = React.useState([]);
+    console.log('re render');
     const callAPI = useCallback(
         async () => {
             await service.getOrder(sessionStorage.getItem('USER_KEY')).then(res => {
-                setData(res.data.slice(rowsPerPage * page, rowsPerPage * (page + 1)))
+                setRows(res.data);
             });
-        }, [])
-    useEffect(() => {
+        }, []);
+    const [data, setData] = React.useState([]);
+    useEffect(() =>{
         callAPI();
-        console.log(dt.current);
-    }, [])
+    },[])
+    useEffect(() => {
+        setData(rows.slice(rowsPerPage * page, rowsPerPage * (page + 1)))
+    }, [rows]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -44,17 +46,19 @@ function HistoryPage() {
         const name = e.currentTarget.id;
         const temp = !sort ?
             rows.slice(rowsPerPage * page, rowsPerPage * (page + 1))
-                .sort((a, b) => (a[name] + '').localeCompare(b[name]))
+                .sort((a, b) => {
+                    console.log(a[name] + '').localeCompare(b[name]);
+                    return (a[name] + '').localeCompare(b[name])
+                })
             :
             rows.slice(rowsPerPage * page, rowsPerPage * (page + 1))
                 .sort((a, b) => (b[name] + '').localeCompare(a[name]));
+        console.log(temp);
         setData(temp);
         setSort(!sort)
     }
-    const [tmp, setTmp] = React.useState([])
 
     const Food = ({ data }) => {
-        console.log(data);
         return (
             <Box sx={{
                 width: 250,
@@ -194,7 +198,6 @@ function HistoryPage() {
                         </TableHead>
                         <TableBody sx={{ overflowY: 'auto' }}>
                             {data.map((item, index) => {
-                                console.log(item);
                                 return (
                                     <TableRow>
                                         <TableCell>{index + 1}</TableCell>
@@ -212,7 +215,7 @@ function HistoryPage() {
                                             <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.name}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.updatedAt}</Typography>
+                                            <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.createdAt}</Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Typography fontFamily={'Roboto Slab'} fontWeight={900} >{item.timeDelivery}</Typography>
@@ -240,4 +243,4 @@ function HistoryPage() {
     )
 }
 
-export default HistoryPage
+export default memo(HistoryPage)

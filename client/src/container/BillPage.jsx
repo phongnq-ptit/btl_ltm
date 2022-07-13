@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Bill from '../component/Bill'
 function BillPage() {
     const location = useLocation();
+    console.log(location);
     const data = location?.state;
     return (
         <Box sx={{

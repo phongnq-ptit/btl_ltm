@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { over } from 'stompjs'
 import SockJS from 'sockjs-client'
 import { setOrderedFood } from '../store/Module.action'
+import jwtDecode from 'jwt-decode';
 function FormOrder(props) {
     const { district } = props;
     const navigate = useNavigate();
@@ -26,7 +27,13 @@ function FormOrder(props) {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [dialog, setDialog] = useState(false);
-    const user = useSelector(state => state?.infoClient);
+    const decode = (jwtDecode(localStorage.getItem("USER_KEY")).sub +'').split('-');
+    const user = {
+      username: decode[1],
+      phone: decode[0],
+      address: decode[2]
+    };
+    console.log(user);
     const [sockjs, setSockjs] = useState();
     useEffect(() => {
         const sockjs = new SockJS('https://wsocketlong.herokuapp.com/websocket')
@@ -43,7 +50,7 @@ function FormOrder(props) {
     const dataDistrict = district.map((item, index) => item.district_name);
     const [info, setInfo] = useState({
         name: user.username,
-        address: '',
+        address: user.address,
         province: '',
         phone: user?.phone,
         date: null,
@@ -74,15 +81,14 @@ function FormOrder(props) {
         //e.stopImmediatePropagation();
         const dt = configDataOrderPost(dataOrder, info);
         console.log(dt);
-        if (dt.orderer.length <= 0) {
+        if (dt.orderer === null) {
             setDialog(true);
             console.log('say why');
-        } 
-        if (info.name && info.phone && info.address) {
+        } else if (info.name && info.phone && info.address) {
             setOpen(true);
             const rs = await service.orderFood(dt);
             sendOrder(rs.data)
-            console.log(rs);
+            // console.log(rs);
             navigate('/bill', {
                 state: {
                     orderFood: data,
@@ -142,6 +148,7 @@ function FormOrder(props) {
                             <TextField
                                 fullWidth
                                 id='address'
+                                value={info.address}
                                 variant="standard"
                                 onChange={handleChange}
                                 placeholder='Nhập số địa chỉ'

@@ -28,12 +28,9 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/book' element={<BookingTable />} />
         <Route path='/bill'
-          element={sessionStorage.length > 0 ?
-            <BillPage /> :
-            <Navigate to={'/order'} replace />} />
+          element={<BillPage />} />
         <Route path='/userinfo'
-          element={sessionStorage.length > 0 ?
-            <UserPage /> : <Navigate to={'/login'} replace />} />
+          element={<UserPage /> } />
         <Route path='/order' element={<Order/>} />
       </Routes>
       <Footer />

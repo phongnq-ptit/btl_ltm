@@ -23,21 +23,21 @@ import jwtDecode from 'jwt-decode';
 function FormOrder(props) {
     const { district } = props;
     const navigate = useNavigate();
-    const service = new OrderContainerService();
     const dispatch = useDispatch();
+    const dd = useSelector(state => state.foodReducer.infoClient);
+    const service = new OrderContainerService(dispatch);
     const [open, setOpen] = useState(false);
     const [dialog, setDialog] = useState(false);
-    const decode = (jwtDecode(localStorage.getItem("USER_KEY")).sub +'').split('-');
     const user = {
-      username: decode[1],
-      phone: decode[0],
-      address: decode[2]
+        username:dd.username,
+        phone: dd.phonenumber,
+        address: dd.address
     };
-    console.log(user);
     const [sockjs, setSockjs] = useState();
     useEffect(() => {
         const sockjs = new SockJS('https://wsocketlong.herokuapp.com/websocket')
         let stompjs = over(sockjs);
+        stompjs.debug = false;
         setSockjs(stompjs)
         stompjs.connect({}, () => {
             stompjs.subscribe('/user/3/private', (payload) => {
@@ -47,7 +47,7 @@ function FormOrder(props) {
             console.log(e);
         });
     }, [])
-    const dataDistrict = district.map((item, index) => item.district_name);
+    const dataDistrict = [];
     const [info, setInfo] = useState({
         name: user.username,
         address: user.address,
@@ -58,7 +58,7 @@ function FormOrder(props) {
         note: ''
     });
     const dataOrder = useSelector(state =>
-        state.listFood.filter(item => item.quanityOrdered > 0));
+        state?.foodReducer?.listFood.filter(item => item.quanityOrdered > 0));
     const data = dataOrder.sort((a, b) => {
         return a.time.localeCompare(b.time);
     })
@@ -78,17 +78,17 @@ function FormOrder(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        //e.stopImmediatePropagation();
         const dt = configDataOrderPost(dataOrder, info);
         console.log(dt);
-        if (dt.orderer === null) {
+        // const rs = await service.orderFood(dt);
+        if (!localStorage.getItem("USER_KEY")) {
             setDialog(true);
             console.log('say why');
         } else if (info.name && info.phone && info.address) {
             setOpen(true);
             const rs = await service.orderFood(dt);
             sendOrder(rs.data)
-            // console.log(rs);
+            console.log(rs);
             navigate('/bill', {
                 state: {
                     orderFood: data,

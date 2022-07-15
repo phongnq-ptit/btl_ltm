@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBbqT7t5vwq1B737JmYegiH58DyTqyr4bY",
+  apiKey: "AIzaSyBbqT7t5vwq1B737JmYegiH58DyTqyr4bY",
   authDomain: "phone-auth-37b9b.firebaseapp.com",
   projectId: "phone-auth-37b9b",
   storageBucket: "phone-auth-37b9b.appspot.com",

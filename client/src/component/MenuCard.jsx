@@ -5,8 +5,7 @@ import OrderCard from './OrderCard'
 import { useSelector } from 'react-redux'
 import OrderContainerService from '../service/OrderContainer.service'
 function MenuCard({category}) {
-  const dataOrder = useSelector(state => state.listFood);
-  console.log(category);
+  const dataOrder = useSelector(state => state.foodReducer.listFood);
   return (
     <Card
       sx={{

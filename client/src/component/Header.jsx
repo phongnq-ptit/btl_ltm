@@ -14,7 +14,6 @@ import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderContainerService from '../service/OrderContainer.service';
-import { setInfoClient } from '../store/Module.action';
 import jwtDecode from 'jwt-decode';
 function Header() {
   const url = useLocation();
@@ -26,15 +25,16 @@ function Header() {
   const service = new OrderContainerService();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  // useSelector(state => console.log(state))
   const decode = localStorage.getItem("USER_KEY") ?
-    (jwtDecode(localStorage.getItem("USER_KEY")).sub + '').split('-') : []
-  const [user, setUser] = useState({
-    username: decode[1],
-    phone: decode[0],
-    address: decode[2]
-  });
+    (jwtDecode(localStorage.getItem("USER_KEY")).sub + '').split('-') : [];
+  const dd = useSelector(state => state.foodReducer.infoClient);
 
-  console.log(user);
+  const user = {
+    username: dd.username,
+    phone: dd.phone,
+    address: dd.address
+  };
   const handleSignout = () => {
     localStorage.clear();
     setDialog(false);
@@ -60,12 +60,7 @@ function Header() {
         setPosition('relative');
       }
     });
-    if (localStorage.length > 0) {
-      console.log('call api');
-      // tmp();
-      //console.log(user);
-      //dispatch(setInfoClient(user))
-    }
+
   }, [])
   return (
     <Container
@@ -113,7 +108,7 @@ function Header() {
             display: 'flex',
             justifyContent: 'center',
           }}>
-          {localStorage.length > 0 ?
+          {localStorage.getItem("USER_KEY") ?
             <Button
               startIcon={<MailOutlineIcon />}
               endIcon={<KeyboardArrowDownIcon />}

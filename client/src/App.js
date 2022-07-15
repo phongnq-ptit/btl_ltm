@@ -13,6 +13,9 @@ import Login from './container/LoginPage';
 import Signup from './container/SignupPage';
 import UserPage from './container/UserPage'
 import HistoryPage from './container/HistoryPage';
+import {IconButton, Avatar, CardMedia} from '@mui/material'
+import CardMedi from './container/CardMedi';
+import MultipleItems from './container/MultipleItems';
 function App() {
   return (
     <div className="App">
@@ -24,7 +27,7 @@ function App() {
           <Route path=':id' element={<Saleoff />} />
         </Route>
         <Route path='/menu' element={<Menu />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={localStorage.getItem("USER_KEY") === null ? <Login /> : <Navigate to={'/'} /> } />
         <Route path='/signup' element={<Signup />} />
         <Route path='/book' element={<BookingTable />} />
         <Route path='/bill'

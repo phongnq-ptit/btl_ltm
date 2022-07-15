@@ -4,18 +4,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setInfoClient } from '../store/Module.action'
 import { Link, useNavigate } from 'react-router-dom'
 import OrderContainerService from '../service/OrderContainer.service'
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 function UserPage() {
     const [dialog, setDialog] = useState(false);
-    const { email, phonenumber, username, address } = useSelector(state => state?.infoClient);
-    console.log('re render');
+    const { email, phonenumber, username, address } = useSelector(state => state.foodReducer.infoClient);
+    const dispatch = useDispatch();
     const [user, setUser] = useState({
-        email: "no email" ,
+        email: "no email",
         password: '************',
-        name: username,
+        username: username,
         address: address,
         phone: phonenumber,
         open: false,
@@ -28,11 +26,12 @@ function UserPage() {
         const { id, value } = e.target;
         console.log(id);
         setUser({ ...user, [id]: value });
-    },[user])
+    }, [user])
     const handleClick = async () => {
         setUser({ ...user, editable: !user.editable });
         if (user.editable) {
             const dt = await service.updateUser(user);
+            dispatch(setInfoClient(user))
             setDialog(true);
             console.log(dt);
         }
@@ -84,14 +83,14 @@ function UserPage() {
                             <TextField
                                 fullWidth
                                 variant="standard"
-                                id='name'
-                                value={user.name}
+                                id='username'
+                                value={user.username}
                                 onChange={handleChange} /> :
                             <Typography
                                 fontFamily={'Roboto Slab'}
                                 paddingTop={1}
                                 fontSize={18}>
-                                {user.name}
+                                {user.username}
                             </Typography>}
                     </div>
                     <div style={{ width: 350, padding: 15, marginBottom: 55 }}>
@@ -115,19 +114,12 @@ function UserPage() {
                             fontWeight={900} >
                             Số điện thoại
                         </Typography>
-                        {user.editable ?
-                            <TextField
-                                fullWidth
-                                variant="standard"
-                                id='phone'
-                                value={user.phone}
-                                onChange={handleChange} /> :
-                            <Typography
-                                fontFamily={'Roboto Slab'}
-                                paddingTop={1}
-                                fontSize={18}>
-                                {user.phone}
-                            </Typography>}
+                        <Typography
+                            fontFamily={'Roboto Slab'}
+                            paddingTop={1}
+                            fontSize={18}>
+                            {user.phone}
+                        </Typography>
                     </div>
                     <div style={{ width: 350, padding: 15, marginBottom: 55 }}>
                         <Typography
@@ -141,7 +133,7 @@ function UserPage() {
                                 fullWidth
                                 variant="standard"
                                 id='address'
-                                // value={user.address}
+                                value={user.address}
                                 onChange={handleChange} /> :
                             <Typography
                                 fontFamily={'Roboto Slab'}

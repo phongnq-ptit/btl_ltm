@@ -9,11 +9,13 @@ export const initOrderedFood = (data) => {
 }
 
 export const configPrice = (data) => {
-    const newData = data.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+    const newData = (parseFloat(data)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
     return newData;
 }
 
 export const configDataOrderPost = (dataOrder, dataClient) => {
+    // console.log(dataOrder);
+    // console.log(dataClient);
     const idUser = sessionStorage.getItem('USER_KEY');
     const idFood = dataOrder.map((item, index) => {
         const id = item?._id;
@@ -33,7 +35,7 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + new Date().getDate()
+                    + '-' + (new Date().getDate() < 10 ? '0'+ (new Date().getDate()) :  (new Date().getDate()))
                 + 'T' + dataClient.time + ':00'
             break;
         case "Ngày mai":
@@ -41,7 +43,7 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + '0'+ (new Date().getDate())
+                + '-' + (new Date().getDate() < 9 ? '0'+ (new Date().getDate()+1) :  (new Date().getDate()+1))
                 + 'T' + dataClient.time + ':00'
             break;
         case "Ngày kia":
@@ -49,22 +51,25 @@ export const configDataOrderPost = (dataOrder, dataClient) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + (new Date().getDate() + 2)
+                    + '-' + (new Date().getDate() < 8 ? '0'+ (new Date().getDate()+2) :  (new Date().getDate()+2))
                 + 'T' + dataClient.time + ':00'
             break;
     }
-    console.log(time);
     const note = dataClient.note;
 
     return {
-        orderer: idUser,
-        dishes: idFood,
-        quantity: quanityFood,
+        id: Math.floor(Math.random()*888888)+100000,
+        orderer: name,
+        productList: dataOrder,
+        quanityList: quanityFood,
         name: name,
         address: address,
         phone: phone,
         note: note,
         timeDelivery: time,
+        createdAt: time,
+        updatedAt: time,
+        status: "Pending",
     }
 }
 
@@ -78,7 +83,7 @@ export const configDataBookingPost = (data) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + new Date().getDate()
+                    + '-' + (new Date().getDate() < 10 ? '0'+ (new Date().getDate()) :  (new Date().getDate()))
                 + 'T' + data.time + ':00'
             break;
         case "Ngày mai":
@@ -86,7 +91,7 @@ export const configDataBookingPost = (data) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + (new Date().getDate() )
+                + '-' + (new Date().getDate() < 9 ? '0'+ (new Date().getDate()+1) :  (new Date().getDate()+1))
                 + 'T' + data.time + ':00'
             break;
         case "Ngày kia":
@@ -94,7 +99,7 @@ export const configDataBookingPost = (data) => {
                 + '-' + (new Date().getMonth() + 1 < 10 ?
                     '0' + (new Date().getMonth() + 1) :
                     new Date().getMonth() + 1)
-                + '-' + (new Date().getDate() + 2)
+                    + '-' + (new Date().getDate() < 8 ? '0'+ (new Date().getDate()+2) :  (new Date().getDate()+2))
                 + 'T' + data.time + ':00'
             break;
     }
@@ -103,12 +108,12 @@ export const configDataBookingPost = (data) => {
 
     return {
         store: store,
-        numberOfPeople: numberOfPeople,
+        people: numberOfPeople,
         note: note,
         phone: phone,
-        arrivalDay: time,
-        name: data.name,
-        booker: sessionStorage.getItem('USER_KEY')
+        date: time,
+        booker: data.name,
+        id: Math.floor(Math.random()*888888)+100000
     }
 }
 
@@ -119,3 +124,13 @@ export const configPhoneNumber = (phonenumber) =>{
         return phonenumber;
     }
 }
+
+
+// const refreshToken = async()=>{
+
+// }
+
+// export const createAxios = (user) =>{
+
+// }
+

@@ -17,15 +17,16 @@ function Signup() {
         address: '',
         phone: '',
         open: false,
-        id: id,
+        id: Math.floor(Math.random()*888888)+100000,
         rs: {}
     });
-    
+
     const navigate = useNavigate();
     const [dialog, setDialog] = useState(false);
     const [otp, setOtp] = useState();
     const [isSign, setIsSign] = useState(false);
     const service = new OrderContainerService();
+
 
     const getCaptcha = () => {
         window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
@@ -45,38 +46,41 @@ function Signup() {
         signInWithPhoneNumber(authentication, configPhoneNumber(user.phone) + '', appVerifier)
             .then((confirmationResult) => {
                 window.confirmationResult = confirmationResult;
+                setIsSign(true);
                 // ...
             }).catch((error) => {
                 console.log(error.message);
             });
     }
-    const otpSubmit = (e) => {
+    const otpSubmit =  (e) => {
         e.preventDefault();
         let confirmationResult = window.confirmationResult;
-        confirmationResult.confirm(otp).then((result) => {
-            console.log(result);
-            console.log(otp);
-            navigate('/login', {replace: true})
+        confirmationResult.confirm(otp).then( async (result) => {
+            await service.activeUser(user.phone).then(res => console.log(res));
+            navigate('/login', { replace: true })
         }).catch((error) => {
-            console.log(e.message);
+            console.log(e);
             // User couldn't sign in (bad verification code?)
             // ...
         });
 
+
     }
     const handleSubmit = async (e) => {
-        setUser({...user, phone: configPhoneNumber(user.phone)});
+        setUser({ ...user, phone: configPhoneNumber(user.phone) });
         const temp = configPhoneNumber(user.phone);
-        setUser({ ...user, open: true })
+        setUser({ ...user, open: true, id: user.phone })
         e.preventDefault();
         const rs = await service.signup(user);
-        if(!rs.data.err){
+        if (!rs.data.err) {
             sendOTP();
+        } else {
+            setUser({ ...user, username: '', phone: '', address: '', password: '', open: false, rs: rs });
         }
+        setUser({ ...user, open: false })
         console.log(rs);
-        setUser({ ...user, username: '', phone: '', address: '', password: '', open: false, rs: rs });
         setDialog(true);
-        
+
     }
     return (
         <Box sx={{
@@ -138,7 +142,7 @@ function Signup() {
                         sx={{
                             marginBottom: 2
                         }}
-                         />
+                    />
                     <Typography fontSize={15} fontFamily={'Roboto Slab'} paddingBottom={1}>
                         Password
                     </Typography>
@@ -205,7 +209,7 @@ function Signup() {
                         value={otp}
                         required
                         type={'number'}
-                        onChange={(e) => {setOtp(e.target.value)}}
+                        onChange={(e) => { setOtp(e.target.value) }}
                         size='small'
                         sx={{
                             marginBottom: 1
@@ -244,7 +248,7 @@ function Signup() {
                 open={dialog}
                 onClose={() => {
                     setDialog(false);
-                    setIsSign(true);
+
                 }} >
                 <Box sx={{
                     width: 500,
@@ -259,11 +263,11 @@ function Signup() {
                         textTransform={'uppercase'}
                         paddingBottom={5}
                         paragraph>
-                        {user.rs?.data?.status === '404' ? 'SDT này đã được đăng kí. Vui lòng sử dụng SDT khác để tiếp tục đăng kí.'
+                        {user.rs?.data?.status ? user.rs.data.err
                             : 'Bạn đã đăng kí thành công. Vui lòng kích hoạt tài khoản của bạn vừa đăng kí!'}
                     </Typography>
                     <Typography textAlign={'center'}>
-                        {user.rs?.data?.status === '404' ?
+                        {user.rs?.data?.status ?
                             <SentimentVeryDissatisfiedIcon sx={{
                                 color: 'red',
                                 fontSize: 200

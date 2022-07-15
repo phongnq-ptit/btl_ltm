@@ -10,7 +10,7 @@ import Bill from '../component/Bill'
 import { useDispatch } from 'react-redux'
 function Order() {
     const service = new OrderContainerService();
-    const [open, setOpen] = useState();
+    const [open, setOpen] = useState('false');
     const dispatch = useDispatch();
     const [category, setCategory] = useState([]);
     const [district, setDistrict] = useState([]);

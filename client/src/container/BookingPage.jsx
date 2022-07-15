@@ -51,9 +51,8 @@ function BookingTable() {
       let rs;
       try {
         rs = await service.booking(data);
+        console.log(rs);
         setRs(rs.data);
-        
-        console.log();
       } catch (e) {
         console.log(e);
       }
@@ -254,10 +253,10 @@ function BookingTable() {
             textAlign={'center'}
             textTransform={'uppercase'}
             paddingBottom={5}>
-            {rs?.status < 300 ? 'Bạn đã đặt bàn thành công' : 'Cơ sở tạm thời đã hết bàn rồi :(('}
+            {!rs?.status ? 'Bạn đã đặt bàn thành công' : 'Cơ sở tạm thời đã hết bàn rồi :(('}
           </Typography>
           <Typography textAlign={'center'}>
-            {rs?.status < 300 ?
+            {!rs?.status ?
               <CheckCircleOutlineIcon sx={{
                 color: 'rgb(35,188,35)',
                 fontSize: 200
@@ -269,7 +268,7 @@ function BookingTable() {
             }
 
           </Typography>
-          {rs?.status < 300 ? <>
+          {!rs?.status  ? <>
             <Typography
               fontFamily={'Roboto Slab'}
               fontSize={12}
@@ -282,7 +281,7 @@ function BookingTable() {
               justifyContent: 'center',
               padding: 1
             }}>
-              <QRCode value={'http://localhost:3000/book/' + rs._id} />
+              <QRCode value={'http://localhost:3000/table/book/' + rs?.id} />
             </Box></> : <Typography
               fontFamily={'Roboto Slab'}
               fontSize={15}

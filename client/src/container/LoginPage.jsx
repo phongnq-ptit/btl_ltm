@@ -36,7 +36,10 @@ function Login() {
             const token = jwt_decode(rs.data?.access_token);
             const userToken = (token?.sub + '').split('-');
             console.log(token);
-            dispatch(setInfoClient({phonenumber: userToken[0], username: userToken[1], address: userToken[2]}))
+            dispatch(setInfoClient({
+                phonenumber: userToken[0], username: userToken[1]
+                , address: userToken[2], access_token: rs.data?.access_token
+            }))
             localStorage.setItem("USER_KEY", rs.data?.access_token);
             localStorage.setItem("KEY_ACCESS", rs.data?.refresh_token);
             navigate('/');

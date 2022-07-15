@@ -11,7 +11,7 @@ export const foodReducer = (state = initState, action) => {
         case SET_ORDERED_FOOD:
             let updateData = [];
             if (action.payload.length === undefined) {
-                const checkExsitFood = state.listFood.findIndex(item => item._id === action.payload._id);
+                const checkExsitFood = state.listFood.findIndex(item => item.id === action.payload.id);
                 if (checkExsitFood !== -1) {
                     // const temp = state.listFood.filter(item => item.id === action.payload.id);
                     // const updatedFood = {
@@ -20,7 +20,7 @@ export const foodReducer = (state = initState, action) => {
                     //     time: action.payload.time
                     // }
                     const temp = [
-                        ...state.listFood.filter(item => item._id !== action.payload._id),
+                        ...state.listFood.filter(item => item.id !== action.payload.id),
                         action?.payload];
                     updateData = temp;
                 } else {
